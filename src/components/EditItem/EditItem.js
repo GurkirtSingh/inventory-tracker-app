@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { useFormik, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
 import {
   updateItem,
   getItem,
@@ -13,7 +12,6 @@ import {
   Stack,
   TextField,
   CircularProgress,
-  Select,
   MenuItem,
 } from "@mui/material";
 import { ItemValidationSchema } from "../../helpers/utils/utils";
@@ -103,31 +101,8 @@ export default function EditItem() {
       });
   }, [itemId, setItem, setAPIErrors]);
 
-  useEffect(() => {
-    getAllWarehouses()
-      .then((res) => {
-        if (res.success) {
-          setListOfAllWarehouse(res.success.warehouses);
-        } else if (res.error) {
-          updateSnackBarMessage({ message: res.error.message, type: "error" });
-        }
-      })
-      .catch((err) => {
-        updateSnackBarMessage(err);
-      });
-  }, []);
-  useEffect(() => {
-    if (item) {
-      setFieldValue("name", item.name, false);
-      setFieldValue("quantity", item.quantity, false);
-      setFieldValue("category", item.category, false);
-      setFieldValue("description", item.description, false);
-      changeSelectedWarehouse(item.warehouse);
-    }
-  }, [item, setFieldValue]);
-
   const changeSelectedWarehouse = (id) => {
-    listOfAllWarehouse.map((warehouse) => {
+    listOfAllWarehouse.forEach((warehouse) => {
       if (warehouse._id === id) {
         setSelectedWarehouse(warehouse);
       }
@@ -140,6 +115,30 @@ export default function EditItem() {
     } = event;
     changeSelectedWarehouse(value);
   };
+
+  useEffect(() => {
+    getAllWarehouses()
+      .then((res) => {
+        if (res.success) {
+          setListOfAllWarehouse(res.success.warehouses);
+        } else if (res.error) {
+          updateSnackBarMessage({ message: res.error.message, type: "error" });
+        }
+      })
+      .catch((err) => {
+        updateSnackBarMessage(err);
+      });
+  }, [updateSnackBarMessage]);
+  useEffect(() => {
+    if (item) {
+      setFieldValue("name", item.name, false);
+      setFieldValue("quantity", item.quantity, false);
+      setFieldValue("category", item.category, false);
+      setFieldValue("description", item.description, false);
+      changeSelectedWarehouse(item.warehouse);
+    }
+  }, [item, setFieldValue]);
+
   return (
     item && (
       <Box

@@ -82,7 +82,7 @@ export default function NewItem() {
     const {
       target: { value },
     } = event;
-    listOfAllWarehouse.map((warehouse) => {
+    listOfAllWarehouse.forEach((warehouse) => {
       if (warehouse._id === value) {
         setSelectedWarehouse(warehouse);
       }

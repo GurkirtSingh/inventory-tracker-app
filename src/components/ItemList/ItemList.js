@@ -78,18 +78,18 @@ export default function ItemList() {
         if (res.success) {
           setTotalItems(totalItems - 1);
         } else if (res.error) {
-          console.log(res.error.message);
+          updateSnackBarMessage(res.error.message);
         }
       })
       .catch((err) => {
-        console.log(err);
+        updateSnackBarMessage.log(err);
       });
     closeDeleteDialog();
   };
 
   const getWarehouseNameById = (id) => {
     let name = "";
-    listOfAllWarehouse.map((warehouse) => {
+    listOfAllWarehouse.forEach((warehouse) => {
       if (warehouse._id === id) {
         name = warehouse.name;
       }
@@ -102,11 +102,13 @@ export default function ItemList() {
       if (data.success) {
         setItemList(data.success.items);
         setTotalItems(data.success.items.length);
-      } else {
-        console.log(data);
+      } else if(data.error) {
+        updateSnackBarMessage(data.error.message);
       }
+    }).catch(err=>{
+      updateSnackBarMessage(err)
     });
-  }, [totalItems]);
+  }, [totalItems, updateSnackBarMessage]);
 
   useEffect(() => {
     getAllWarehouses()

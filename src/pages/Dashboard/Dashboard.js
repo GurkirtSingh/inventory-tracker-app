@@ -7,7 +7,7 @@ import {
   Box,
 } from "@mui/material";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const navigate = useNavigate();
